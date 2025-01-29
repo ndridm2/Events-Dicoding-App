@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Events Dicoding App</string>
+    <string name="title">Judul</string>
+    <string name="title_home">Home</string>
+    <string name="title_upcoming">Upcoming</string>
+    <string name="title_appbar_upcoming">Event Upcoming</string>
+    <string name="title_finished">Finished</string>
+    <string name="title_appbar_finished">Event Finished</string>
+    <string name="no_event_now">Event tidak tersedia saat ini</string>
+    <string name="event_summary">Ringkasan</string>
+    <string name="event_description">Lorem Ipsum is not simply random text.
+        It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.
+        Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia,
+        looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage,
+        and going through the cites of the word in classical literature, discovered the undoubtable source.
+        Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum"
+        (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics,
+        very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet.."
+    </string>
+    <string name="event_quota">Quota peserta</string>
+    <string name="event_quota_nominal">1500</string>
+    <string name="event_registrants">Peserta terdaftar</string>
+    <string name="event_registrants_nominal">1500</string>
+    <string name="event_owner">Owner</string>
+    <string name="event_begin_time">23 Jan 2025</string>
+    <string name="btn_register">Register Now</string>
+    <string name="title_heading_upcoming">Event Upcoming</string>
+    <string name="title_heading_finished">Event Finished</string>
+    <string name="hint_search">Cari event…</string>
+    <string name="title_no_result">Event tidak ditemukan</string>
+    <string name="read_more">Read More</string>
+</resources>
