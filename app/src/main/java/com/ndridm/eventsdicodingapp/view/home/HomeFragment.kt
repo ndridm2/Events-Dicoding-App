@@ -5,17 +5,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.addCallback
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.ndridm.eventsdicodingapp.data.response.ListEventsItem
+import com.ndridm.eventsdicodingapp.data.SettingPreferences
+import com.ndridm.eventsdicodingapp.data.dataStore
+import com.ndridm.eventsdicodingapp.data.remote.response.ListEventsItem
 import com.ndridm.eventsdicodingapp.databinding.FragmentHomeBinding
 import com.ndridm.eventsdicodingapp.view.adapter.CarouselAdapter
 import com.ndridm.eventsdicodingapp.view.adapter.FinishedListItemAdapter
 import com.ndridm.eventsdicodingapp.view.adapter.SearchAdapter
 import com.ndridm.eventsdicodingapp.view.detail.DetailActivity
+import com.ndridm.eventsdicodingapp.view.settings.SettingsViewModel
+import com.ndridm.eventsdicodingapp.view.settings.SettingsViewModelFactory
 
 @Suppress("DEPRECATION")
 class HomeFragment : Fragment() {
@@ -23,6 +29,11 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val homeViewModel: HomeViewModel by viewModels()
+
+    private val settingViewModel: SettingsViewModel by viewModels {
+        val pref = SettingPreferences.getInstance(requireContext().dataStore)
+        SettingsViewModelFactory(pref)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,41 +58,66 @@ class HomeFragment : Fragment() {
                 requireActivity().onBackPressed()
             }
         }
-        homeViewModel.searchResult.observe(viewLifecycleOwner) { result -> handleSearchResult(result) }
-        homeViewModel.isLoadingUpcoming.observe(viewLifecycleOwner) { isLoadUpcoming -> isLoadingUpcoming(isLoadUpcoming) }
-        homeViewModel.isLoadingFinished.observe(viewLifecycleOwner) { isLoadFinished -> isLoadingFinished(isLoadFinished) }
-        homeViewModel.eventCarousel.observe(viewLifecycleOwner) {loadCarousel -> setCarousel(loadCarousel) }
-        homeViewModel.eventFinishedList.observe(viewLifecycleOwner) { loadFinishedList -> setFinishListItem(loadFinishedList) }
+        homeViewModel.apply {
+            searchResult.observe(viewLifecycleOwner) { result -> handleSearchResult(result) }
+            isLoadingUpcoming.observe(viewLifecycleOwner) { isLoadUpcoming -> isLoadingUpcoming(isLoadUpcoming) }
+            isLoadingFinished.observe(viewLifecycleOwner) { isLoadFinished -> isLoadingFinished(isLoadFinished) }
+            eventFinishedList.observe(viewLifecycleOwner) { loadFinishedList -> setFinishListItem(loadFinishedList) }
+            errorMessage.observe(viewLifecycleOwner) { showError(it) }
+            eventCarousel.observe(viewLifecycleOwner) {loadCarousel ->
+                if (loadCarousel != null) {
+                    setCarousel(loadCarousel)
+                }
+            }
+
+        }
 
         setupRecycleView()
         setupSearch()
+
+        settingViewModel.getThemeSettings()
+            .observe(viewLifecycleOwner) { isDarkModeActive: Boolean ->
+                if (isDarkModeActive) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                }
+            }
     }
 
     private fun setupRecycleView() {
 
-        val searchAdapater = SearchAdapter {
+        val searchAdapter = SearchAdapter {
             val intent = Intent(requireContext(), DetailActivity::class.java)
             intent.putExtra(DetailActivity.EXTRA_ID, it.toString())
             startActivity(intent)
         }
-        binding.searchResultList.adapter = searchAdapater
-        val layoutManagerSearchResult = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        binding.searchResultList.layoutManager = layoutManagerSearchResult
-        binding.searchResultList.addItemDecoration(DividerItemDecoration(requireContext(),
-            layoutManagerSearchResult.orientation)
-        )
 
-        val layoutManagerListItem = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        binding.rvFinishedList.layoutManager = layoutManagerListItem
-        binding.rvFinishedList.addItemDecoration(DividerItemDecoration(requireContext(),
-            layoutManagerListItem.orientation)
-        )
+        binding.apply {
 
-        val layoutManagerCarousel = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
-        binding.rvCarouselEvent.layoutManager = layoutManagerCarousel
-        binding.rvCarouselEvent.addItemDecoration(DividerItemDecoration(requireContext(),
-            layoutManagerCarousel.orientation)
-        )
+            searchResultList.adapter = searchAdapter
+
+            val layoutManagerSearchResult = LinearLayoutManager(requireContext(),
+                LinearLayoutManager.VERTICAL, false)
+            searchResultList.layoutManager = layoutManagerSearchResult
+            searchResultList.addItemDecoration(DividerItemDecoration(requireContext(),
+                layoutManagerSearchResult.orientation)
+            )
+
+            val layoutManagerListItem = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            rvFinishedList.layoutManager = layoutManagerListItem
+            rvFinishedList.addItemDecoration(DividerItemDecoration(requireContext(),
+                layoutManagerListItem.orientation)
+            )
+
+            val layoutManagerCarousel = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
+            rvCarouselEvent.layoutManager = layoutManagerCarousel
+            rvCarouselEvent.addItemDecoration(DividerItemDecoration(requireContext(),
+                layoutManagerCarousel.orientation)
+            )
+
+        }
+
     }
 
     private fun setupSearch() {
@@ -136,6 +172,10 @@ class HomeFragment : Fragment() {
 
     private fun isLoadingFinished(isLoading: Boolean) {
         binding.progressBarFinished.visibility = if(isLoading) View.VISIBLE else View.GONE
+    }
+
+    private fun showError(errorMessage: String) {
+        Toast.makeText(requireActivity(), errorMessage, Toast.LENGTH_SHORT).show()
     }
 
 

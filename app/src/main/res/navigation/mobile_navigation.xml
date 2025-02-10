@@ -22,4 +22,16 @@
         android:name="com.ndridm.eventsdicodingapp.view.finished.FinishedFragment"
         android:label="@string/title_appbar_finished"
         tools:layout="@layout/fragment_finished" />
+
+    <fragment
+        android:id="@+id/navigation_event_favorite"
+        android:name="com.ndridm.eventsdicodingapp.view.favorite.FavoriteFragment"
+        android:label="@string/title_appbar_favorite"
+        tools:layout="@layout/fragment_favorite" />
+
+    <fragment
+        android:id="@+id/navigation_event_settings"
+        android:name="com.ndridm.eventsdicodingapp.view.settings.SettingsFragment"
+        android:label="@string/title_appbar_settings"
+        tools:layout="@layout/fragment_settings" />
 </navigation>

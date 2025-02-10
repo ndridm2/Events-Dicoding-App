@@ -1,4 +1,4 @@
-package com.ndridm.eventsdicodingapp.data.response
+package com.ndridm.eventsdicodingapp.data.remote.response
 
 import com.google.gson.annotations.SerializedName
 
@@ -12,7 +12,7 @@ data class EventResponse(
     @field:SerializedName("error")
     val error: Boolean? = null,
 
-)
+    )
 class ListEventsItem (
     @field:SerializedName("summary")
     val summary: String? = null,

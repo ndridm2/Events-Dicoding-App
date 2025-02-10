@@ -2,7 +2,10 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.EventsDicodingApp" parent="Theme.Material3.DayNight">
         <!-- Customize your light theme here. -->
-<!--         <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryVariant">@color/white</item>
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="Theme.EventsDicodingApp" parent="Base.Theme.EventsDicodingApp" />

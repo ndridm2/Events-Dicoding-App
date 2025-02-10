@@ -14,7 +14,7 @@
             android:id="@+id/search_bar"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="8dp"
             android:hint="@string/hint_search"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -80,15 +80,17 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_carousel_event"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:orientation="horizontal"
             android:visibility="visible"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_heading_upcoming" />
+            app:layout_constraintTop_toBottomOf="@id/tv_heading_upcoming"
+            tools:ignore="SpeakableTextPresentCheck"
+            tools:listitem="@layout/carousel_card_item" />
 
         <TextView
             android:id="@+id/tv_heading_finished"
@@ -117,7 +119,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_heading_finished" />
+            app:layout_constraintTop_toBottomOf="@id/tv_heading_finished"
+            tools:listitem="@layout/list_item"/>
 
         <ProgressBar
             android:id="@+id/progressBarUpcoming"

@@ -4,13 +4,7 @@
     <!-- Border gradient -->
     <item>
         <shape android:shape="rectangle">
-<!--            <gradient-->
-<!--                android:angle="135"-->
-<!--                android:endColor="#3700B3"-->
-<!--                android:centerColor="#3B03BC"-->
-<!--                android:startColor="#5105FB"-->
-<!--                android:type="linear" />-->
-            <solid android:color="#3B03BC"/>
+            <solid android:color="#808080"/>
             <corners android:radius="8dp"/>
         </shape>
     </item>
@@ -18,7 +12,7 @@
     <!-- Inner background -->
     <item android:top="2dp" android:bottom="2dp" android:left="2dp" android:right="2dp">
         <shape android:shape="rectangle">
-            <solid android:color="@android:color/white"/>
+            <solid android:color="#ffffff"/>
             <corners android:radius="6dp"/>
         </shape>
     </item>

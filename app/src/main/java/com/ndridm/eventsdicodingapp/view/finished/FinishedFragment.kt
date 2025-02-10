@@ -1,18 +1,23 @@
 package com.ndridm.eventsdicodingapp.view.finished
 
+import com.ndridm.eventsdicodingapp.data.SettingPreferences
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.ndridm.eventsdicodingapp.data.response.ListEventsItem
+import com.ndridm.eventsdicodingapp.data.remote.response.ListEventsItem
 import com.ndridm.eventsdicodingapp.databinding.FragmentFinishedBinding
 import com.ndridm.eventsdicodingapp.view.adapter.EventAdapter
 import com.ndridm.eventsdicodingapp.view.detail.DetailActivity
+import com.ndridm.eventsdicodingapp.view.settings.SettingsViewModel
+import com.ndridm.eventsdicodingapp.view.settings.SettingsViewModelFactory
+import com.ndridm.eventsdicodingapp.data.dataStore
 
 class FinishedFragment : Fragment() {
 
@@ -20,6 +25,11 @@ class FinishedFragment : Fragment() {
     private var _binding: FragmentFinishedBinding? = null
     private val binding get() = _binding!!
     private val finishedViewModel: FinishedViewModel by viewModels()
+
+    private val settingViewModel: SettingsViewModel by viewModels {
+        val pref = SettingPreferences.getInstance(requireContext().dataStore)
+        SettingsViewModelFactory(pref)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,6 +54,15 @@ class FinishedFragment : Fragment() {
         finishedViewModel.isLoading.observe(viewLifecycleOwner) { load ->
             showLoading(load)
         }
+
+        settingViewModel.getThemeSettings()
+            .observe(viewLifecycleOwner) { isDarkModeActive: Boolean ->
+                if (isDarkModeActive) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                }
+            }
     }
 
     private fun setFinishedEvent(finishedEvent: List<ListEventsItem>) {

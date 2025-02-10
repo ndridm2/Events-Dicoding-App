@@ -28,7 +28,9 @@ class MainActivity : AppCompatActivity() {
             setOf(
                 R.id.navigation_home,
                 R.id.navigation_event_upcoming,
-                R.id.navigation_event_finished
+                R.id.navigation_event_finished,
+                R.id.navigation_event_favorite,
+                R.id.navigation_event_settings
             )
         )
 
